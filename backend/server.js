@@ -24,7 +24,7 @@ if (fs.existsSync(publicPath)) {
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: 'Adi@9657@18',    // << set your MySQL password
+  password: 'YOUR_MYSQL_PASSWORD',    // << set your MySQL password
   database: 'memory_tracker',
   waitForConnections: true,
   connectionLimit: 10
