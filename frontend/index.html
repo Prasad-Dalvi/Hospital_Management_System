@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareLink Dashboard</title>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="background-animation"></div>
+
+    <div class="main-wrapper">
+
+        <aside class="sidebar glass-card">
+            <div class="sidebar-blur-overlay"></div>
+            <div class="logo-container">
+                <i class="fas fa-heartbeat logo-icon"></i>
+                <span class="logo-text">CareLink</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#overview" class="nav-link active"><i class="fas fa-home nav-icon"></i> Overview</a>
+                <a href="#patients" class="nav-link"><i class="fas fa-user-injured nav-icon"></i> Patients</a>
+                <a href="#caregivers" class="nav-link"><i class="fas fa-user-nurse nav-icon"></i> Caregivers</a>
+                <a href="#medical" class="nav-link"><i class="fas fa-notes-medical nav-icon"></i> Medical History</a>
+                <a href="#medications" class="nav-link"><i class="fas fa-pills nav-icon"></i> Medications</a>
+                <a href="#appointments" class="nav-link"><i class="fas fa-calendar-check nav-icon"></i> Appointments</a>
+                <a href="#locations" class="nav-link"><i class="fas fa-map-marker-alt nav-icon"></i> Locations</a>
+                <a href="#activities" class="nav-link"><i class="fas fa-running nav-icon"></i> Activities</a>
+                <a href="#relatives" class="nav-link"><i class="fas fa-users nav-icon"></i> Relatives</a>
+            </nav>
+        </aside>
+
+        <main class="dashboard-content">
+
+            <div class="topbar">
+                <button id="menuBtn" class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search patients...">
+                </div>
+                <button id="newBtn" class="add-new-btn"><i class="fas fa-plus"></i> New</button>
+            </div>
+            
+            <section id="overview" class="section">
+                <div class="welcome-banner glass-card">
+                    <h1 class="welcome-title">Welcome to CareLink Dashboard</h1>
+                    <p class="welcome-text">Your central hub for managing patient care and progress.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div>
+                            <div class="stat-label">Total Patients</div>
+                            <div class="stat-value" id="statTotal">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon" style="background: rgba(255, 193, 7, 0.1); color: #ffc107;"><i class="fas fa-bell"></i></div>
+                        <div>
+                            <div class="stat-label">Today's Reminders</div>
+                            <div class="stat-value" id="statReminders">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon" style="background: rgba(40, 167, 69, 0.1); color: #28a745;"><i class="fas fa-user-shield"></i></div>
+                        <div>
+                            <div class="stat-label">Active Caregivers</div>
+                            <div class="stat-value" id="statCaregivers">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="glass-card">
+                        <div class="card-header"><h3>Medication Adherence</h3></div>
+                        <canvas id="adherenceChart" style="width: 100%; height: 250px;"></canvas>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-header"><h3>Upcoming Appointments</h3></div>
+                        <ul class="list" id="apptList">
+                            </ul>
+                    </div>
+                </div>
+
+            </section>
+
+            <section id="patients" class="section" hidden>
+                <div class="section-header">
+                    <h2 class="section-title">Patient Roster</h2>
+                    <button id="addPatientBtn" class="primary-btn"><i class="fas fa-plus"></i> Add Patient</button>
+                </div>
+                <div class="glass-card full-width">
+                    <div class="table-responsive">
+                        <table class="data-table" id="patientsTable">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Age</th>
+                                    <th>Stage</th>
+                                    <th>Caretaker</th>
+                                    <th>Last Visit</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="caregivers" class="section" hidden>
+                <div class="section-header">
+                    <h2 class="section-title">Current Caregivers</h2>
+                    <button id="addCaregiverBtn" class="primary-btn"><i class="fas fa-plus"></i> Add Caregiver</button>
+                </div>
+                <div id="currentCaregiverCard" class="full-width caregivers-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    </div>
+
+                <div class="section-header" style="margin-top: 2rem;">
+                    <h2 class="section-title">Previous Caretakers</h2>
+                    <button id="addPrevCaregiverBtn" class="primary-btn" disabled><i class="fas fa-history"></i> Add Manual</button>
+                </div>
+                <div class="glass-card full-width">
+                    <ul class="list" id="prevCareList">
+                        </ul>
+                </div>
+            </section>
+
+            <section id="medical" class="section" hidden>
+                <div class="section-header">
+                    <h2 class="section-title">Medical History</h2>
+                    <button id="addMedicalBtn" class="primary-btn"><i class="fas fa-plus"></i> Add Record</button>
+                </div>
+                <div class="glass-card full-width">
+                    <div class="table-responsive">
+                        <table class="data-table" id="medicalTable">
+                            <thead>
+                                <tr><th>Patient</th><th>Condition</th><th>Diagnosis Date</th><th>Treatment</th><th>Doctor</th><th>Follow Up</th></tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="medications" class="section" hidden>
+                <div class="section-header">
+                    <h2 class="section-title">Medication Records</h2>
+                    <button id="addMedicationBtn" class="primary-btn"><i class="fas fa-plus"></i> Add Medication</button>
+                </div>
+                <div class="glass-card full-width">
+                    <div class="table-responsive">
+                        <table class="data-table" id="medTable">
+                            <thead>
+                                <tr><th>Patient</th><th>Medication</th><th>Dosage</th><th>Frequency</th><th>Start Date</th><th>End Date</th></tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="appointments" class="section" hidden>
+                <div class="section-header">
+                    <h2 class="section-title">Appointments Schedule</h2>
+                    <button id="addAppointmentBtn" class="primary-btn"><i class="fas fa-plus"></i> Add Appointment</button>
+                </div>
+                <div class="glass-card full-width">
+                    <ul class="list" id="appointmentList">
+                        </ul>
+                </div>
+            </section>
+            
+            <section id="locations" class="section" hidden>
+                <div class="section-header">
+                    <h2 class="section-title">Location Tracking Log</h2>
+                    <button id="addLocationBtn" class="primary-btn"><i class="fas fa-plus"></i> Log Location</button>
+                </div>
+                <div class="glass-card full-width">
+                    <div class="table-responsive">
+                        <table class="data-table" id="locTable">
+                            <thead>
+                                <tr><th>Patient</th><th>Date</th><th>Time</th><th>Description</th><th>Lat</th><th>Lng</th></tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="activities" class="section" hidden>
+                <div class="section-header">
+                    <h2 class="section-title">Activity Log</h2>
+                    <button id="addActivityBtn" class="primary-btn"><i class="fas fa-plus"></i> Log Activity</button>
+                </div>
+                <div class="glass-card full-width">
+                    <div class="table-responsive">
+                        <table class="data-table" id="actTable">
+                            <thead>
+                                <tr><th>Patient</th><th>Date</th><th>Time</th><th>Activity</th><th>Mood</th><th>Caretaker</th></tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="relatives" class="section" hidden>
+                <div class="section-header">
+                    <h2 class="section-title">Associated Relatives</h2>
+                    <button id="addRelativeBtn" class="primary-btn"><i class="fas fa-plus"></i> Add Relative</button>
+                </div>
+                <div class="full-width" id="relativesGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    </div>
+            </section>
+
+
+        </main>
+
+    </div>
+
+    <div id="modal" class="modal-overlay">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal Title</h3>
+                <button id="closeModal" class="close-modal-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="modalBody">
+                </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
